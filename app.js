@@ -17,6 +17,7 @@ wsServer = new WebSocketServer({
     httpServer: server
 });
 
+let msg = [];
 // WebSocket server
 wsServer.on('request', function(request) {
     console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
@@ -27,7 +28,10 @@ wsServer.on('request', function(request) {
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             // process WebSocket message
-            console.log(message);
+            // console.log(message);
+            msg.push(message.utf8Data);
+            connection.send(JSON.stringify({data:msg}));
+            console.log(msg);
         }
     });
     connection.on('error',function(err){
@@ -39,15 +43,7 @@ wsServer.on('request', function(request) {
         console.log('disconnect');
     });
 
-    let num = 0;
-    let timer = setInterval(()=>{
-        num++;
-        if(num >=50){
-            clearInterval(timer);
-            // connection.close();
-        }
-        connection.send(num);
-        
-    },1000);
+
+   
 });
 

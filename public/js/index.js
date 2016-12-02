@@ -12,32 +12,37 @@ if (window.WebSocket != undefined) {
         console.log('Error: ' + e.data);
     };
     connect.onmessage = (e) => {
-        console.log(e.data);
-        let div = document.createElement('div');
-        div.innerHTML = e.data;
-        document.body.append(div);
+        let data = JSON.parse(e.data).data;
+        let dialogWrap = document.querySelector('.dialogue');
+        let str = "";
+        for (let i = 0; i < data.length; i++) {
+            let res = JSON.parse(data[i]);
+            str += `<div class="dia-wrap"><time class="time">${res.time}</time><p class="content">${res.msg}</p></div>`;
+        }
+        dialogWrap.innerHTML = str;
     };
-    fetch('http://localhost:8000/cors', {
-        mode: 'cors'
-    })
-        .then(res => res.text())
-        .then(data => {
-            // console.log(data);
-            document.body.innerHTML += data;
-            data.replace(/\<script src=\"(.*?)\"\>\<\/script\>/g, function (a, v) {
-                if (v) {
-                    var s = document.createElement('script');
-                    s.src = 'http://localhost:8000'+ v;
-                    document.body.append(s);
-                }
-            });
-        })
-        .then(err => {
-            if (err) console.log(err);
-        });
-    
-    setTimeout(()=>{
-    connect.send('hello');        
-    },2000);
+
+    let btn = document.querySelector('#btn-send');
+
+    btn.onclick = function (e) {
+        sendMsg(e);
+    };
+
+    document.querySelector('#textInp').onkeyup = function (e) {
+        sendMsg(e);
+    };
+    function sendMsg(e){
+        if (e.keyCode == 13) {
+            let value = document.querySelector('#textInp').value;
+            let data = {
+                msg: value,
+                time: new Date().toLocaleTimeString()
+            }
+            connect.send(JSON.stringify(data));
+            document.querySelector('#textInp').value = '';
+            document.querySelector('#textInp').focus();
+        }
+    }
+
 }
 

@@ -1,0 +1,32 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.wrap{
+    width: 800px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 1px 5px 10px rgba(0, 0, 0, .3);
+}
+.dialogue{
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    min-height: 200px;
+}
+.form{
+    padding: 10px;
+}
+#textInp,
+#btn-send{
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    outline: none;
+}
+#textInp{width: 700px;}
+.dia-wrap{
+    margin-top: 10px;
+}
